@@ -3,15 +3,15 @@ let computerPlay = () => {
   return playOptions[Math.floor(Math.random() * 3)];
 };
 
-let playRound = (move) => {
-  move.toLowerCase();
+let playRound = (playerSelection) => {
+  playerSelection.toLowerCase();
   let computerMove = computerPlay().toLowerCase();
   let result =
-    move == computerMove
+    playerSelection == computerMove
       ? 0
-      : (move == "rock" && computerMove == "scissors") ||
-        (move == "paper" && computerMove == "rock") ||
-        (move == "scissors" && computerMove == "paper")
+      : (playerSelection == "rock" && computerMove == "scissors") ||
+        (playerSelection == "paper" && computerMove == "rock") ||
+        (playerSelection == "scissors" && computerMove == "paper")
       ? 1
       : -1;
   let winner =
