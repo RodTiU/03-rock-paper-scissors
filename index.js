@@ -1,11 +1,11 @@
-let computerPlay = () => {
+let playComputer = () => {
   let playOptions = ["Rock", "Paper", "Scissors"];
   return playOptions[Math.floor(Math.random() * 3)];
 };
 
 let playRound = (playerSelection) => {
   playerSelection.toLowerCase();
-  let computerMove = computerPlay().toLowerCase();
+  let computerMove = playComputer().toLowerCase();
   let result =
     playerSelection == computerMove
       ? 0
@@ -23,7 +23,7 @@ let playRound = (playerSelection) => {
   return winner + ". Rival moves " + computerMove.toUpperCase();
 };
 
-let game = () => {
+let beginGame = () => {
   let scoreHuman = 0,
     scoreComputer = 0;
   for (let i = 0; i < 5; i++) {
