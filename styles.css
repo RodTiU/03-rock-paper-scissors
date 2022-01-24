@@ -32,8 +32,6 @@ body {
   color: #ffffff;
   height: 10px;
   width: auto;
-  /* position: absolute; */
-  /* bottom: 15vh; */
 }
 .buttons {
   display: flex;
