@@ -1,9 +1,10 @@
-let playComputer = () => {
+// Logic functions
+const playComputer = () => {
   let playOptions = ["Rock", "Paper", "Scissors"];
   return playOptions[Math.floor(Math.random() * 3)];
 };
 
-let playRound = (playerSelection) => {
+const playRound = (playerSelection) => {
   playerSelection.toLowerCase();
   let computerMove = playComputer().toLowerCase();
   let result =
@@ -20,25 +21,62 @@ let playRound = (playerSelection) => {
       : result == 1
       ? "Human Wins"
       : "Computer Wins";
-  return winner + ". Rival moves " + computerMove.toUpperCase();
+  return winner + ". Rival moves " + computerMove.toLowerCase();
 };
 
-let beginGame = () => {
-  let scoreHuman = 0,
-    scoreComputer = 0;
-  for (let i = 0; i < 5; i++) {
-    let playerSelection = String(prompt("Choose Rock, Paper or Scissors:"));
-    let gameRound = playRound(playerSelection);
-    scoreHuman = gameRound.match(/human/i) != null ? ++scoreHuman : scoreHuman;
-    scoreComputer =
-      gameRound.match(/computer/i) != null ? ++scoreComputer : scoreComputer;
-    console.log(gameRound);
-  }
-  let finalScore =
-    scoreHuman > scoreComputer
-      ? `Human Wins ${scoreHuman}-${scoreComputer}`
-      : scoreHuman < scoreComputer
-      ? `Computer Wins ${scoreComputer}-${scoreHuman}`
-      : `It's a Tie to ${scoreHuman}`;
-  return finalScore;
+const startGame = (playerSelection) => {
+  let scoreRoundHuman = 0,
+    scoreRoundComputer = 0;
+  let gameRound = playRound(playerSelection);
+  scoreRoundHuman =
+    gameRound.match(/human/i) != null ? ++scoreRoundHuman : scoreRoundHuman;
+  scoreRoundComputer =
+    gameRound.match(/computer/i) != null
+      ? ++scoreRoundComputer
+      : scoreRoundComputer;
+  return { gameRound, scoreRoundHuman, scoreRoundComputer };
 };
+
+// DOM interaction
+
+let scorePreviewCounter = [0, 0];
+const selectedButton = (e) => {
+  const selectionButton = document.querySelector(
+    `button[class='${e.target.className}']`
+  );
+  const score = document.querySelector("p[class='score']");
+  const roundResults = document.querySelector("p[class='round']");
+  const finalScore = document.querySelector("p[class='finalScore']");
+  if (!selectionButton) return;
+  const game = startGame(selectionButton.className);
+  selectionButton.classList.add("click");
+  if (scorePreviewCounter[0] < 5 && scorePreviewCounter[1] < 5) {
+    scorePreviewCounter[0] += game.scoreRoundHuman;
+    scorePreviewCounter[1] += game.scoreRoundComputer;
+    score.innerHTML = `Human: ${scorePreviewCounter[0]}<br>Computer: ${scorePreviewCounter[1]}`;
+    roundResults.innerHTML = `${game.gameRound}`;
+    if (scorePreviewCounter[0] === 5 || scorePreviewCounter[1] === 5) {
+      finalScore.innerHTML =
+        scorePreviewCounter[0] > scorePreviewCounter[1]
+          ? "Human wins the game"
+          : "Computer wins the game";
+    }
+  } else return;
+};
+
+const removeTranstion = (e) => {
+  if (e.propertyName !== "transform") return;
+  e.target.classList.remove("click");
+};
+
+const buttons = document.querySelectorAll(".buttons");
+buttons.forEach((button) => {
+  button.addEventListener("transitionend", removeTranstion);
+});
+
+const restartButton = document.querySelector(".reset button");
+restartButton.addEventListener("click", () => {
+  window.location.reload();
+});
+
+window.addEventListener("click", selectedButton);
