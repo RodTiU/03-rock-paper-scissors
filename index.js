@@ -38,7 +38,6 @@ const startGame = (playerSelection) => {
 };
 
 // DOM interaction
-
 let scorePreviewCounter = [0, 0];
 const selectedButton = (e) => {
   const selectionButton = document.querySelector(
@@ -64,14 +63,14 @@ const selectedButton = (e) => {
   } else return;
 };
 
-const removeTranstion = (e) => {
+const removeTransition = (e) => {
   if (e.propertyName !== "transform") return;
   e.target.classList.remove("click");
 };
 
 const buttons = document.querySelectorAll(".buttons");
 buttons.forEach((button) => {
-  button.addEventListener("transitionend", removeTranstion);
+  button.addEventListener("transitionend", removeTransition);
 });
 
 const restartButton = document.querySelector(".reset button");
